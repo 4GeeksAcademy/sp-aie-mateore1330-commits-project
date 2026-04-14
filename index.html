@@ -106,13 +106,25 @@
 
         <!-- Desktop Navigation -->
         <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
-          <a href="#services" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors">Services</a>
-          <a href="#about" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors">About Us</a>
-          <a href="#locations" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors">Locations</a>
-          <a href="#contact" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors">Contact</a>
-          <a href="aplication.html" class="inline-flex items-center px-5 py-2.5 bg-blue-action text-white text-sm font-semibold rounded-lg hover:bg-navy transition-colors focus:outline-none focus:ring-2 focus:ring-blue-action focus:ring-offset-2">
+          <a href="#services" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors" data-lang="nav_services">Services</a>
+          <a href="#about" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors" data-lang="nav_about">About Us</a>
+          <a href="#locations" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors" data-lang="nav_locations">Locations</a>
+          <a href="#contact" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors" data-lang="nav_contact">Contact</a>
+
+          <a href="aplication.html" class="inline-flex items-center px-5 py-2.5 bg-blue-action text-white text-sm font-semibold rounded-lg hover:bg-navy transition-colors focus:outline-none focus:ring-2 focus:ring-blue-action focus:ring-offset-2" data-lang="nav_book">
             Book Appointment
           </a>
+
+          <!-- Language Switch (Tailwind only) -->
+          <label class="ml-6 flex items-center gap-2 select-none cursor-pointer" aria-label="Language toggle">
+            <input type="checkbox" id="lang-toggle" class="sr-only peer" aria-label="Switch language between English and Spanish">
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 12h18M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9Zm0 0c4.971 0 9 4.029 9 9s-4.029 9-9 9-9-4.029-9-9 4.029-9 9-9Z"/>
+            </svg>
+            <span id="label-en" class="text-xs font-bold text-blue-500 transition-colors peer-checked:text-gray-400 peer-checked:font-medium">EN</span>
+            <span class="relative inline-flex w-10 h-5 bg-blue-400 rounded-full transition-colors peer-checked:bg-green-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+            <span id="label-es" class="text-xs text-gray-400 transition-colors peer-checked:text-green-500 peer-checked:font-bold">ES</span>
+          </label>
         </nav>
 
         <!-- Mobile menu button -->
@@ -137,11 +149,23 @@
     <!-- Mobile Navigation Panel -->
     <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200" aria-label="Mobile navigation">
       <div class="px-4 pt-2 pb-4 space-y-1">
-        <a href="#services" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action">Services</a>
-        <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action">About Us</a>
-        <a href="#locations" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action">Locations</a>
-        <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action">Contact</a>
-        <a href="aplication.html" class="block mt-2 text-center px-4 py-2.5 bg-blue-action text-white font-semibold rounded-lg hover:bg-navy transition-colors">
+        <a href="#services" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action" data-lang="nav_services">Services</a>
+        <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action" data-lang="nav_about">About Us</a>
+        <a href="#locations" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action" data-lang="nav_locations">Locations</a>
+        <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action" data-lang="nav_contact">Contact</a>
+
+        <!-- Mobile Language Switch -->
+        <label class="flex items-center gap-2 px-3 py-2 select-none cursor-pointer">
+          <input type="checkbox" id="lang-toggle-mobile" class="sr-only peer" aria-label="Switch language">
+          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 12h18M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9Zm0 0c4.971 0 9 4.029 9 9s-4.029 9-9 9-9-4.029-9-9 4.029-9 9-9Z"/>
+          </svg>
+          <span id="label-en-mobile" class="text-xs font-bold text-blue-500 transition-colors peer-checked:text-gray-400 peer-checked:font-medium">EN</span>
+          <span class="relative inline-flex w-10 h-5 bg-blue-400 rounded-full transition-colors peer-checked:bg-green-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+          <span id="label-es-mobile" class="text-xs text-gray-400 transition-colors peer-checked:text-green-500 peer-checked:font-bold">ES</span>
+        </label>
+
+        <a href="aplication.html" class="block mt-2 text-center px-4 py-2.5 bg-blue-action text-white font-semibold rounded-lg hover:bg-navy transition-colors" data-lang="nav_book">
           Book Appointment
         </a>
       </div>
@@ -159,23 +183,23 @@
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
         <div class="max-w-3xl">
-          <span class="inline-block px-4 py-1.5 bg-green-vitality/20 text-green-vitality text-sm font-semibold rounded-full mb-6">
+          <span class="inline-block px-4 py-1.5 bg-green-vitality/20 text-green-vitality text-sm font-semibold rounded-full mb-6" data-lang="hero_badge">
             12 Clinics Across the US &amp; UK
           </span>
           <h1 class="font-montserrat font-extrabold text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-            Quality Primary Care <span class="text-green-vitality">Without the Wait</span>
+            <span data-lang="hero_title_1">Quality Primary Care </span><span class="text-green-vitality" data-lang="hero_title_2">Without the Wait</span>
           </h1>
-          <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 max-w-2xl">
+          <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 max-w-2xl" data-lang="hero_desc">
             Same-day appointments, extended hours, and bilingual staff — because your health can't wait until tomorrow. Accessible, patient-centred care across Texas, Florida, Georgia, London, and Manchester.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
             <a href="aplication.html" class="inline-flex items-center justify-center px-8 py-4 bg-green-vitality text-navy text-base font-bold rounded-lg hover:bg-emerald-400 transition-colors shadow-lg shadow-green-vitality/25 focus:outline-none focus:ring-2 focus:ring-green-vitality focus:ring-offset-2 focus:ring-offset-navy">
-              Book Your Appointment
+              <span data-lang="hero_cta_book">Book Your Appointment</span>
               <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
               </svg>
             </a>
-            <a href="#services" class="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white text-base font-semibold rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy">
+            <a href="#services" class="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white text-base font-semibold rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy" data-lang="hero_cta_services">
               Explore Our Services
             </a>
           </div>
@@ -185,19 +209,19 @@
         <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           <div class="text-center md:text-left">
             <p class="font-montserrat font-bold text-3xl md:text-4xl text-white">12</p>
-            <p class="text-sm text-gray-400 mt-1">Clinics Across 2 Countries</p>
+            <p class="text-sm text-gray-400 mt-1" data-lang="stat_1_label">Clinics Across 2 Countries</p>
           </div>
           <div class="text-center md:text-left">
             <p class="font-montserrat font-bold text-3xl md:text-4xl text-white">200+</p>
-            <p class="text-sm text-gray-400 mt-1">Dedicated Healthcare Staff</p>
+            <p class="text-sm text-gray-400 mt-1" data-lang="stat_2_label">Dedicated Healthcare Staff</p>
           </div>
           <div class="text-center md:text-left">
             <p class="font-montserrat font-bold text-3xl md:text-4xl text-white">14+</p>
-            <p class="text-sm text-gray-400 mt-1">Years of Trusted Care</p>
+            <p class="text-sm text-gray-400 mt-1" data-lang="stat_3_label">Years of Trusted Care</p>
           </div>
           <div class="text-center md:text-left">
-            <p class="font-montserrat font-bold text-3xl md:text-4xl text-green-vitality">Same Day</p>
-            <p class="text-sm text-gray-400 mt-1">Appointments Available</p>
+            <p class="font-montserrat font-bold text-3xl md:text-4xl text-green-vitality" data-lang="stat_4_value">Same Day</p>
+            <p class="text-sm text-gray-400 mt-1" data-lang="stat_4_label">Appointments Available</p>
           </div>
         </div>
       </div>
@@ -208,11 +232,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-16">
-          <span class="inline-block px-3 py-1 bg-blue-action/10 text-blue-action text-sm font-semibold rounded-full mb-4">Our Services</span>
-          <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-4">
+          <span class="inline-block px-3 py-1 bg-blue-action/10 text-blue-action text-sm font-semibold rounded-full mb-4" data-lang="services_badge">Our Services</span>
+          <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-4" data-lang="services_title">
             Comprehensive Care, Centered Around You
           </h2>
-          <p class="text-gray-slate/70 text-lg leading-relaxed">
+          <p class="text-gray-slate/70 text-lg leading-relaxed" data-lang="services_desc">
             From routine check-ups to chronic disease management, we provide the full spectrum of ambulatory care across all our locations.
           </p>
         </div>
@@ -226,8 +250,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Primary Care</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="svc_1_title">Primary Care</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="svc_1_desc">
               Comprehensive general health services with same-day appointments and extended hours, so you never have to wait weeks for care.
             </p>
           </article>
@@ -239,8 +263,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Specialist Consultations</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="svc_2_title">Specialist Consultations</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="svc_2_desc">
               Access expert medical advice across specialties without the referral complexity. We connect you with the right specialist quickly.
             </p>
           </article>
@@ -252,8 +276,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Chronic Disease Management</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="svc_3_title">Chronic Disease Management</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="svc_3_desc">
               Ongoing support and structured care plans for diabetes, hypertension, and other chronic conditions — with regular follow-ups at your convenience.
             </p>
           </article>
@@ -265,8 +289,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Preventive Health Programs</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="svc_4_title">Preventive Health Programs</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="svc_4_desc">
               Stay ahead of health issues with personalised screenings, wellness check-ups, and preventive care plans designed to keep you healthy.
             </p>
           </article>
@@ -280,11 +304,11 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <!-- Left: Content -->
           <div>
-            <span class="inline-block px-3 py-1 bg-green-vitality/10 text-green-vitality text-sm font-semibold rounded-full mb-4">Why HealthCore</span>
-            <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-6">
+            <span class="inline-block px-3 py-1 bg-green-vitality/10 text-green-vitality text-sm font-semibold rounded-full mb-4" data-lang="why_badge">Why HealthCore</span>
+            <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-6" data-lang="why_title">
               Built on a Simple Idea: Care That Doesn't Make You Wait
             </h2>
-            <p class="text-gray-slate/70 text-lg leading-relaxed mb-8">
+            <p class="text-gray-slate/70 text-lg leading-relaxed mb-8" data-lang="why_desc">
               HealthCore was founded by Dr. Sandra Okonkwo — a physician frustrated by the time clinicians spent on admin instead of patients. We built a healthcare network where access is immediate, processes are simple, and the patient always comes first.
             </p>
 
@@ -296,8 +320,8 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-montserrat font-semibold text-navy mb-1">Same-Day Appointments</h3>
-                  <p class="text-gray-slate/70 text-sm leading-relaxed">No more waiting weeks to see a doctor. Walk in or book today and get seen today — across all 12 clinics.</p>
+                  <h3 class="font-montserrat font-semibold text-navy mb-1" data-lang="why_1_title">Same-Day Appointments</h3>
+                  <p class="text-gray-slate/70 text-sm leading-relaxed" data-lang="why_1_desc">No more waiting weeks to see a doctor. Walk in or book today and get seen today — across all 12 clinics.</p>
                 </div>
               </div>
 
@@ -308,8 +332,8 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-montserrat font-semibold text-navy mb-1">Extended Hours</h3>
-                  <p class="text-gray-slate/70 text-sm leading-relaxed">Our clinics operate beyond standard business hours, making it easier for working families to get the care they need.</p>
+                  <h3 class="font-montserrat font-semibold text-navy mb-1" data-lang="why_2_title">Extended Hours</h3>
+                  <p class="text-gray-slate/70 text-sm leading-relaxed" data-lang="why_2_desc">Our clinics operate beyond standard business hours, making it easier for working families to get the care they need.</p>
                 </div>
               </div>
 
@@ -320,8 +344,8 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-montserrat font-semibold text-navy mb-1">Bilingual Staff</h3>
-                  <p class="text-gray-slate/70 text-sm leading-relaxed">Our US clinics have bilingual professionals to serve diverse communities — because language should never be a barrier to healthcare.</p>
+                  <h3 class="font-montserrat font-semibold text-navy mb-1" data-lang="why_3_title">Bilingual Staff</h3>
+                  <p class="text-gray-slate/70 text-sm leading-relaxed" data-lang="why_3_desc">Our US clinics have bilingual professionals to serve diverse communities — because language should never be a barrier to healthcare.</p>
                 </div>
               </div>
 
@@ -332,8 +356,8 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-montserrat font-semibold text-navy mb-1">HIPAA &amp; UK GDPR Compliant</h3>
-                  <p class="text-gray-slate/70 text-sm leading-relaxed">Your data is protected under the strictest healthcare privacy regulations in both the US and UK.</p>
+                  <h3 class="font-montserrat font-semibold text-navy mb-1" data-lang="why_4_title">HIPAA &amp; UK GDPR Compliant</h3>
+                  <p class="text-gray-slate/70 text-sm leading-relaxed" data-lang="why_4_desc">Your data is protected under the strictest healthcare privacy regulations in both the US and UK.</p>
                 </div>
               </div>
             </div>
@@ -346,22 +370,22 @@
                 <svg class="w-12 h-12 text-green-vitality mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                 </svg>
-                <blockquote class="text-lg font-medium italic leading-relaxed">
-                  "We built HealthCore so clinicians could focus on patients, not paperwork. Quality healthcare should be accessible and immediate."
+                <blockquote class="text-lg font-medium italic leading-relaxed" data-lang="quote_text">
+                  “We built HealthCore so clinicians could focus on patients, not paperwork. Quality healthcare should be accessible and immediate.”
                 </blockquote>
-                <p class="mt-4 text-sm text-gray-300">— Dr. Sandra Okonkwo, Founder &amp; CEO</p>
+                <p class="mt-4 text-sm text-gray-300" data-lang="quote_author">— Dr. Sandra Okonkwo, Founder &amp; CEO</p>
               </div>
 
               <div class="grid grid-cols-2 gap-4">
                 <div class="bg-white-clinical rounded-xl p-4 text-center">
                   <p class="font-montserrat font-bold text-2xl text-navy">9</p>
-                  <p class="text-sm text-gray-slate/60 mt-1">US Clinics</p>
-                  <p class="text-xs text-gray-slate/40">TX · FL · GA</p>
+                  <p class="text-sm text-gray-slate/60 mt-1" data-lang="card_us_label">US Clinics</p>
+                  <p class="text-xs text-gray-slate/40" data-lang="card_us_detail">TX · FL · GA</p>
                 </div>
                 <div class="bg-white-clinical rounded-xl p-4 text-center">
                   <p class="font-montserrat font-bold text-2xl text-navy">3</p>
-                  <p class="text-sm text-gray-slate/60 mt-1">UK Clinics</p>
-                  <p class="text-xs text-gray-slate/40">London · Manchester</p>
+                  <p class="text-sm text-gray-slate/60 mt-1" data-lang="card_uk_label">UK Clinics</p>
+                  <p class="text-xs text-gray-slate/40" data-lang="card_uk_detail">London · Manchester</p>
                 </div>
               </div>
             </div>
@@ -378,11 +402,11 @@
     <section id="about" class="py-20 md:py-28 bg-white-clinical">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-16">
-          <span class="inline-block px-3 py-1 bg-navy/10 text-navy text-sm font-semibold rounded-full mb-4">About HealthCore</span>
-          <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-4">
+          <span class="inline-block px-3 py-1 bg-navy/10 text-navy text-sm font-semibold rounded-full mb-4" data-lang="about_badge">About HealthCore</span>
+          <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-4" data-lang="about_title">
             A Healthcare Network You Can Trust
           </h2>
-          <p class="text-gray-slate/70 text-lg leading-relaxed">
+          <p class="text-gray-slate/70 text-lg leading-relaxed" data-lang="about_desc">
             Founded in 2011 in Austin, Texas, HealthCore has grown from a single clinic into a transatlantic healthcare network. We serve communities across three US states and two UK cities with the same mission: making quality care accessible to everyone.
           </p>
         </div>
@@ -395,8 +419,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Expert Clinical Team</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="about_1_title">Expert Clinical Team</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="about_1_desc">
               Over 120 clinical staff — physicians, nurse practitioners, nurses, and medical assistants — led by Dr. Marcus Reid, ensuring evidence-based care at every location.
             </p>
           </article>
@@ -407,8 +431,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.745 3.745 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Patient-Centred Experience</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="about_2_title">Patient-Centred Experience</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="about_2_desc">
               From booking to follow-up, our Patient Experience team led by Priya Nair ensures a seamless journey — with proactive reminders and personalised care coordination.
             </p>
           </article>
@@ -419,8 +443,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
               </svg>
             </div>
-            <h3 class="font-montserrat font-bold text-xl text-navy mb-3">Data Privacy &amp; Compliance</h3>
-            <p class="text-gray-slate/70 leading-relaxed">
+            <h3 class="font-montserrat font-bold text-xl text-navy mb-3" data-lang="about_3_title">Data Privacy &amp; Compliance</h3>
+            <p class="text-gray-slate/70 leading-relaxed" data-lang="about_3_desc">
               Under Claire Whitfield's governance, every system meets HIPAA (US) and UK GDPR standards. Your health data is handled with the highest levels of security and legal compliance.
             </p>
           </article>
@@ -428,14 +452,14 @@
 
         <!-- CTA Banner -->
         <div class="bg-gradient-to-r from-navy to-blue-action rounded-3xl p-8 md:p-12 text-center">
-          <h3 class="font-montserrat font-bold text-2xl md:text-3xl text-white mb-4">
+          <h3 class="font-montserrat font-bold text-2xl md:text-3xl text-white mb-4" data-lang="cta_title">
             Ready to Experience Healthcare That Puts You First?
           </h3>
-          <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
+          <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto" data-lang="cta_desc">
             Join thousands of patients who trust HealthCore for accessible, high-quality care. Book your appointment today — no long waits, no confusing systems.
           </p>
           <a href="aplication.html" class="inline-flex items-center justify-center px-8 py-4 bg-green-vitality text-navy text-base font-bold rounded-lg hover:bg-emerald-400 transition-colors shadow-lg shadow-green-vitality/25 focus:outline-none focus:ring-2 focus:ring-green-vitality focus:ring-offset-2 focus:ring-offset-navy">
-            Book Your Appointment Now
+            <span data-lang="cta_button">Book Your Appointment Now</span>
             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
@@ -448,11 +472,11 @@
     <section id="locations" class="py-20 md:py-28 bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-16">
-          <span class="inline-block px-3 py-1 bg-blue-action/10 text-blue-action text-sm font-semibold rounded-full mb-4">Our Locations</span>
-          <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-4">
+          <span class="inline-block px-3 py-1 bg-blue-action/10 text-blue-action text-sm font-semibold rounded-full mb-4" data-lang="loc_badge">Our Locations</span>
+          <h2 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-4" data-lang="loc_title">
             12 Clinics, Two Countries, One Standard of Care
           </h2>
-          <p class="text-gray-slate/70 text-lg leading-relaxed">
+          <p class="text-gray-slate/70 text-lg leading-relaxed" data-lang="loc_desc">
             Whether you're in the US or the UK, you'll receive the same level of quality, accessible healthcare built on HealthCore's founding principles.
           </p>
         </div>
@@ -462,17 +486,17 @@
           <div class="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-gray-100">
             <div class="flex items-center gap-3 mb-6">
               <span class="text-3xl" aria-hidden="true">🇺🇸</span>
-              <h3 class="font-montserrat font-bold text-2xl text-navy">United States</h3>
+              <h3 class="font-montserrat font-bold text-2xl text-navy" data-lang="loc_us_title">United States</h3>
             </div>
-            <p class="text-gray-slate/70 mb-6">9 clinics across three states, offering same-day appointments, extended hours, and bilingual staff.</p>
+            <p class="text-gray-slate/70 mb-6" data-lang="loc_us_desc">9 clinics across three states, offering same-day appointments, extended hours, and bilingual staff.</p>
             <div class="space-y-4">
               <div class="flex items-center gap-3 p-3 bg-white-clinical rounded-xl">
                 <div class="w-10 h-10 bg-blue-action/10 text-blue-action rounded-lg flex items-center justify-center flex-shrink-0">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy">Texas</p>
-                  <p class="text-sm text-gray-slate/60">Headquarters &amp; multiple clinics — Austin</p>
+                  <p class="font-semibold text-navy" data-lang="loc_texas">Texas</p>
+                  <p class="text-sm text-gray-slate/60" data-lang="loc_texas_detail">Headquarters &amp; multiple clinics — Austin</p>
                 </div>
               </div>
               <div class="flex items-center gap-3 p-3 bg-white-clinical rounded-xl">
@@ -480,8 +504,8 @@
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy">Florida</p>
-                  <p class="text-sm text-gray-slate/60">Regional clinics</p>
+                  <p class="font-semibold text-navy" data-lang="loc_florida">Florida</p>
+                  <p class="text-sm text-gray-slate/60" data-lang="loc_florida_detail">Regional clinics</p>
                 </div>
               </div>
               <div class="flex items-center gap-3 p-3 bg-white-clinical rounded-xl">
@@ -489,8 +513,8 @@
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy">Georgia</p>
-                  <p class="text-sm text-gray-slate/60">Regional clinics</p>
+                  <p class="font-semibold text-navy" data-lang="loc_georgia">Georgia</p>
+                  <p class="text-sm text-gray-slate/60" data-lang="loc_georgia_detail">Regional clinics</p>
                 </div>
               </div>
             </div>
@@ -500,17 +524,17 @@
           <div class="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-gray-100">
             <div class="flex items-center gap-3 mb-6">
               <span class="text-3xl" aria-hidden="true">🇬🇧</span>
-              <h3 class="font-montserrat font-bold text-2xl text-navy">United Kingdom</h3>
+              <h3 class="font-montserrat font-bold text-2xl text-navy" data-lang="loc_uk_title">United Kingdom</h3>
             </div>
-            <p class="text-gray-slate/70 mb-6">3 clinics serving London and Manchester with private pay and NHS contract options.</p>
+            <p class="text-gray-slate/70 mb-6" data-lang="loc_uk_desc">3 clinics serving London and Manchester with private pay and NHS contract options.</p>
             <div class="space-y-4">
               <div class="flex items-center gap-3 p-3 bg-white-clinical rounded-xl">
                 <div class="w-10 h-10 bg-green-vitality/10 text-green-vitality rounded-lg flex items-center justify-center flex-shrink-0">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy">London</p>
-                  <p class="text-sm text-gray-slate/60">Multiple locations across the city</p>
+                  <p class="font-semibold text-navy" data-lang="loc_london">London</p>
+                  <p class="text-sm text-gray-slate/60" data-lang="loc_london_detail">Multiple locations across the city</p>
                 </div>
               </div>
               <div class="flex items-center gap-3 p-3 bg-white-clinical rounded-xl">
@@ -518,8 +542,8 @@
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                 </div>
                 <div>
-                  <p class="font-semibold text-navy">Manchester</p>
-                  <p class="text-sm text-gray-slate/60">Regional clinic</p>
+                  <p class="font-semibold text-navy" data-lang="loc_manchester">Manchester</p>
+                  <p class="text-sm text-gray-slate/60" data-lang="loc_manchester_detail">Regional clinic</p>
                 </div>
               </div>
             </div>
@@ -541,7 +565,7 @@
             </svg>
             <span class="font-montserrat font-bold text-xl text-white">Health<span class="text-green-vitality">Core</span></span>
           </a>
-          <p class="text-gray-400 text-sm leading-relaxed mb-6">
+          <p class="text-gray-400 text-sm leading-relaxed mb-6" data-lang="footer_desc">
             Quality primary care without the wait. Same-day appointments, extended hours, and bilingual staff across 12 clinics in the US &amp; UK.
           </p>
           <div class="flex gap-3">
@@ -556,33 +580,33 @@
 
         <!-- Quick Links -->
         <div>
-          <h4 class="font-montserrat font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">Quick Links</h4>
+          <h4 class="font-montserrat font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4" data-lang="footer_quick">Quick Links</h4>
           <ul class="space-y-3">
-            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Services</a></li>
-            <li><a href="#about" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">About Us</a></li>
-            <li><a href="#locations" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Locations</a></li>
-            <li><a href="aplication.html" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Book Appointment</a></li>
+            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="nav_services">Services</a></li>
+            <li><a href="#about" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="nav_about">About Us</a></li>
+            <li><a href="#locations" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="nav_locations">Locations</a></li>
+            <li><a href="aplication.html" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="nav_book">Book Appointment</a></li>
           </ul>
         </div>
 
         <!-- Services -->
         <div>
-          <h4 class="font-montserrat font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">Services</h4>
+          <h4 class="font-montserrat font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4" data-lang="footer_services">Services</h4>
           <ul class="space-y-3">
-            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Primary Care</a></li>
-            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Specialist Consultations</a></li>
-            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Chronic Disease Management</a></li>
-            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors">Preventive Health</a></li>
+            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="footer_primary">Primary Care</a></li>
+            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="footer_specialist">Specialist Consultations</a></li>
+            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="footer_chronic">Chronic Disease Management</a></li>
+            <li><a href="#services" class="text-sm text-gray-300 hover:text-green-vitality transition-colors" data-lang="footer_preventive">Preventive Health</a></li>
           </ul>
         </div>
 
         <!-- Contact -->
         <div>
-          <h4 class="font-montserrat font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">Contact</h4>
+          <h4 class="font-montserrat font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4" data-lang="footer_contact">Contact</h4>
           <ul class="space-y-3">
             <li class="flex items-start gap-2">
               <svg class="w-4 h-4 mt-0.5 text-green-vitality flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-              <span class="text-sm text-gray-300">Austin, Texas (HQ)</span>
+              <span class="text-sm text-gray-300" data-lang="footer_hq">Austin, Texas (HQ)</span>
             </li>
             <li class="flex items-start gap-2">
               <svg class="w-4 h-4 mt-0.5 text-green-vitality flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"/></svg>
@@ -598,15 +622,18 @@
 
       <!-- Bottom Bar -->
       <div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-sm text-gray-400">&copy; 2026 HealthCore. All rights reserved.</p>
+        <p class="text-sm text-gray-400" data-lang="footer_copyright">&copy; 2026 HealthCore. All rights reserved.</p>
         <div class="flex gap-6">
-          <a href="#" class="text-sm text-gray-400 hover:text-green-vitality transition-colors">Privacy Policy</a>
-          <a href="#" class="text-sm text-gray-400 hover:text-green-vitality transition-colors">Terms of Service</a>
-          <a href="#" class="text-sm text-gray-400 hover:text-green-vitality transition-colors">HIPAA Notice</a>
+          <a href="#" class="text-sm text-gray-400 hover:text-green-vitality transition-colors" data-lang="footer_privacy">Privacy Policy</a>
+          <a href="#" class="text-sm text-gray-400 hover:text-green-vitality transition-colors" data-lang="footer_terms">Terms of Service</a>
+          <a href="#" class="text-sm text-gray-400 hover:text-green-vitality transition-colors" data-lang="footer_hipaa">HIPAA Notice</a>
         </div>
       </div>
     </div>
   </footer>
+
+  <!-- Language System -->
+  <script src="translations.js"></script>
 
   <!-- Mobile Menu Toggle Script -->
   <script>
