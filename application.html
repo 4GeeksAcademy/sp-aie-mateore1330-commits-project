@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthCore — Patient Inquiry Form</title>
+  <meta name="description" content="Submit your patient inquiry to HealthCore. Our front-desk team will contact you within 1 business day to confirm your appointment details." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="HealthCore" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy': '#1D2D50',
+            'blue-action': '#3A7BD5',
+            'white-clinical': '#F6FBFF',
+            'gray-slate': '#2D3436',
+            'green-vitality': '#00B894',
+          },
+          fontFamily: {
+            montserrat: ['Montserrat', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* intl-tel-input container should behave like a regular full-width Tailwind input */
+    .iti {
+      width: 100%;
+    }
+
+    .iti__country-container {
+      z-index: 20;
+    }
+
+    .iti__country-list {
+      max-width: min(92vw, 22rem);
+      z-index: 30;
+    }
+  </style>
+</head>
+
+<body class="font-inter text-gray-slate bg-white-clinical antialiased">
+
+  <!-- ========== HEADER ========== -->
+  <header class="sticky top-0 z-50 bg-white-clinical/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2" aria-label="HealthCore home">
+          <svg class="w-8 h-8 text-navy" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
+          <span class="font-montserrat font-bold text-xl md:text-2xl text-navy">Health<span class="text-blue-action">Core</span></span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-6" aria-label="Main navigation">
+          <a href="index.html" class="text-sm font-medium text-gray-slate hover:text-blue-action transition-colors" data-lang="form_back">← Back to Home</a>
+
+          <!-- Language Switch -->
+          <label class="flex items-center gap-2 select-none cursor-pointer" aria-label="Language toggle">
+            <input type="checkbox" id="lang-toggle" class="sr-only peer" aria-label="Switch language between English and Spanish">
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 12h18M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9Zm0 0c4.971 0 9 4.029 9 9s-4.029 9-9 9-9-4.029-9-9 4.029-9 9-9Z"/>
+            </svg>
+            <span id="label-en" class="text-xs font-bold text-blue-500 transition-colors peer-checked:text-gray-400 peer-checked:font-medium">EN</span>
+            <span class="relative inline-flex w-10 h-5 bg-blue-400 rounded-full transition-colors peer-checked:bg-green-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+            <span id="label-es" class="text-xs text-gray-400 transition-colors peer-checked:text-green-500 peer-checked:font-bold">ES</span>
+          </label>
+        </nav>
+
+        <!-- Mobile menu button -->
+        <button type="button" id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-slate hover:text-blue-action hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-action" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open main menu">
+          <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="menu-icon-close" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Panel -->
+    <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200" aria-label="Mobile navigation">
+      <div class="px-4 pt-2 pb-4 space-y-1">
+        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-slate hover:bg-gray-100 hover:text-blue-action" data-lang="form_back">← Back to Home</a>
+        <!-- Mobile Language Switch -->
+        <label class="flex items-center gap-2 px-3 py-2 select-none cursor-pointer">
+          <input type="checkbox" id="lang-toggle-mobile" class="sr-only peer" aria-label="Switch language">
+          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M3 12h18M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9Zm0 0c4.971 0 9 4.029 9 9s-4.029 9-9 9-9-4.029-9-9 4.029-9 9-9Z"/>
+          </svg>
+          <span id="label-en-mobile" class="text-xs font-bold text-blue-500 transition-colors peer-checked:text-gray-400 peer-checked:font-medium">EN</span>
+          <span class="relative inline-flex w-10 h-5 bg-blue-400 rounded-full transition-colors peer-checked:bg-green-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-4 after:h-4 after:bg-white after:rounded-full after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+          <span id="label-es-mobile" class="text-xs text-gray-400 transition-colors peer-checked:text-green-500 peer-checked:font-bold">ES</span>
+        </label>
+      </div>
+    </nav>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+
+    <!-- ========== FORM SECTION ========== -->
+    <div id="form-section">
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <span class="inline-block px-3 py-1 bg-blue-action/10 text-blue-action text-sm font-semibold rounded-full mb-4" data-lang="form_badge">Patient Inquiry</span>
+        <h1 class="font-montserrat font-bold text-3xl md:text-4xl text-navy mb-3" data-lang="form_title">Request an Appointment</h1>
+        <p class="text-gray-slate/70 text-lg leading-relaxed max-w-xl mx-auto" data-lang="form_subtitle">Fill in the details below and a member of our front-desk team will contact you within 1 business day to confirm your appointment.</p>
+      </div>
+
+      <!-- Partnership notice -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8 text-sm text-amber-800">
+        <p data-lang="form_partnership_notice">Are you a healthcare provider or organisation looking to partner with HealthCore? Contact our operations team at <a href="mailto:partnerships@healthcore.com" class="font-semibold underline">partnerships@healthcore.com</a></p>
+      </div>
+
+      <!-- FORM -->
+      <form id="patient-inquiry-form" novalidate class="space-y-8">
+
+        <!-- ── Fieldset 1: Personal Information ── -->
+        <fieldset class="border border-gray-200 rounded-2xl p-6 md:p-8 bg-white shadow-sm">
+          <legend class="font-montserrat font-semibold text-lg text-navy px-2" data-lang="fs_personal">Personal Information</legend>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <!-- First Name -->
+            <div>
+              <label for="first_name" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_first_name">First Name</label>
+              <input type="text" id="first_name" name="first_name" required minlength="2" maxlength="50"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                data-lang-placeholder="ph_first_name" placeholder="e.g. John" autocomplete="given-name" />
+              <p id="first_name-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_first_name_val" role="alert"></p>
+            </div>
+
+            <!-- Last Name -->
+            <div>
+              <label for="last_name" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_last_name">Last Name</label>
+              <input type="text" id="last_name" name="last_name" required minlength="2" maxlength="50"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                data-lang-placeholder="ph_last_name" placeholder="e.g. Doe" autocomplete="family-name" />
+              <p id="last_name-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_last_name_val" role="alert"></p>
+            </div>
+
+            <!-- Date of Birth -->
+            <div>
+              <label for="date_of_birth" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_dob">Date of Birth</label>
+              <input type="date" id="date_of_birth" name="date_of_birth" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                autocomplete="bday" />
+              <p id="date_of_birth-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_dob_val" role="alert"></p>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_email">Email Address</label>
+              <input type="email" id="email" name="email" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                data-lang-placeholder="ph_email" placeholder="e.g. john@email.com" autocomplete="email" />
+              <p id="email-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_email_val" role="alert"></p>
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label for="phone" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                data-lang-placeholder="ph_phone" placeholder="e.g. +1 305 555 0191" autocomplete="tel" inputmode="tel"
+                aria-describedby="phone-error" aria-invalid="false" />
+              <p id="phone-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_phone_val" role="alert"></p>
+            </div>
+
+            <!-- Preferred Language -->
+            <div>
+              <label for="preferred_language" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_preferred_language">Preferred Language</label>
+              <select id="preferred_language" name="preferred_language" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors bg-white">
+                <option value="" data-lang="form_select_placeholder">-- Select --</option>
+                <option value="English" data-lang="form_lang_english">English</option>
+                <option value="Spanish" data-lang="form_lang_spanish">Spanish</option>
+              </select>
+              <p id="preferred_language-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_preferred_language_val" role="alert"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Fieldset 2: Appointment Details ── -->
+        <fieldset class="border border-gray-200 rounded-2xl p-6 md:p-8 bg-white shadow-sm">
+          <legend class="font-montserrat font-semibold text-lg text-navy px-2" data-lang="fs_appointment">Appointment Details</legend>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <!-- Preferred Clinic -->
+            <div>
+              <label for="preferred_clinic" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_preferred_clinic">Preferred Clinic</label>
+              <select id="preferred_clinic" name="preferred_clinic" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors bg-white">
+                <option value="" data-lang="form_select_placeholder">-- Select --</option>
+                <option value="HealthCore Austin Central">HealthCore Austin Central</option>
+                <option value="HealthCore Austin North">HealthCore Austin North</option>
+                <option value="HealthCore San Antonio">HealthCore San Antonio</option>
+                <option value="HealthCore Miami">HealthCore Miami</option>
+                <option value="HealthCore Orlando">HealthCore Orlando</option>
+                <option value="HealthCore Atlanta">HealthCore Atlanta</option>
+              </select>
+              <p id="preferred_clinic-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_preferred_clinic_val" role="alert"></p>
+            </div>
+
+            <!-- Preferred Date -->
+            <div>
+              <label for="preferred_date" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_preferred_date">Preferred Date</label>
+              <input type="date" id="preferred_date" name="preferred_date" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors" />
+              <p id="preferred_date-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_preferred_date_val" role="alert"></p>
+            </div>
+
+            <!-- Preferred Time Slot -->
+            <div>
+              <label for="preferred_time" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_preferred_time">Preferred Time Slot</label>
+              <select id="preferred_time" name="preferred_time" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors bg-white">
+                <option value="" data-lang="form_select_placeholder">-- Select --</option>
+                <option value="Morning (7am-12pm)" data-lang="form_time_morning">Morning (7am–12pm)</option>
+                <option value="Afternoon (12pm-5pm)" data-lang="form_time_afternoon">Afternoon (12pm–5pm)</option>
+                <option value="Evening (5pm-8pm)" data-lang="form_time_evening">Evening (5pm–8pm)</option>
+              </select>
+              <p id="preferred_time-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_preferred_time_val" role="alert"></p>
+              <p id="preferred_time-warning" class="mt-1 text-xs text-amber-600 hidden" role="status"></p>
+            </div>
+
+            <!-- Service Type -->
+            <div>
+              <label for="service_type" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_service_type">Service Required</label>
+              <select id="service_type" name="service_type" required
+                class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors bg-white">
+                <option value="" data-lang="form_select_placeholder">-- Select --</option>
+                <option value="Primary Care" data-lang="form_service_primary_care">Primary Care</option>
+                <option value="Chronic Disease Management" data-lang="form_service_chronic">Chronic Disease Management</option>
+                <option value="Specialist Consultation" data-lang="form_service_specialist">Specialist Consultation</option>
+                <option value="Preventive Health" data-lang="form_service_preventive">Preventive Health</option>
+                <option value="Women's Health" data-lang="form_service_womens">Women's Health</option>
+                <option value="Paediatric Care" data-lang="form_service_paediatric">Paediatric Care</option>
+                <option value="Mental Health" data-lang="form_service_mental">Mental Health</option>
+              </select>
+              <p id="service_type-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_service_type_val" role="alert"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Fieldset 3: Patient Status ── -->
+        <fieldset class="border border-gray-200 rounded-2xl p-6 md:p-8 bg-white shadow-sm">
+          <legend class="font-montserrat font-semibold text-lg text-navy px-2" data-lang="fs_status">Patient Status</legend>
+
+          <div class="space-y-6 mt-4">
+            <!-- New Patient -->
+            <div>
+              <p class="text-sm font-medium text-gray-slate mb-2" data-lang="form_new_patient">Is this your first visit to HealthCore?</p>
+              <div class="flex gap-6">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="new_patient" value="Yes" required class="w-4 h-4 text-blue-action focus:ring-blue-action border-gray-300" />
+                  <span class="text-sm" data-lang="form_yes">Yes</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="new_patient" value="No" required class="w-4 h-4 text-blue-action focus:ring-blue-action border-gray-300" />
+                  <span class="text-sm" data-lang="form_no">No</span>
+                </label>
+              </div>
+              <p id="new_patient-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_new_patient_val" role="alert"></p>
+            </div>
+
+            <!-- Patient ID (conditional — shown when new_patient = No) -->
+            <div id="patient_id-group" class="hidden">
+              <label for="patient_id" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_patient_id">Patient ID (optional)</label>
+              <input type="text" id="patient_id" name="patient_id" maxlength="9"
+                class="w-full md:w-1/2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                data-lang-placeholder="ph_patient_id" placeholder="e.g. HC-A3F291" />
+              <p id="patient_id-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_patient_id_val" role="alert"></p>
+            </div>
+
+            <!-- Has Insurance -->
+            <div>
+              <p class="text-sm font-medium text-gray-slate mb-2" data-lang="form_has_insurance">Do you have health insurance?</p>
+              <div class="flex gap-6">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="has_insurance" value="Yes" required class="w-4 h-4 text-blue-action focus:ring-blue-action border-gray-300" />
+                  <span class="text-sm" data-lang="form_yes">Yes</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="has_insurance" value="No" required class="w-4 h-4 text-blue-action focus:ring-blue-action border-gray-300" />
+                  <span class="text-sm" data-lang="form_no">No</span>
+                </label>
+              </div>
+              <p id="has_insurance-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_has_insurance_val" role="alert"></p>
+            </div>
+
+            <!-- Insurance fields (conditional — shown when has_insurance = Yes) -->
+            <div id="insurance-group" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Insurance Provider -->
+              <div>
+                <label for="insurance_provider" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_insurance_provider">Insurance Provider</label>
+                <input type="text" id="insurance_provider" name="insurance_provider" maxlength="100"
+                  class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                  data-lang-placeholder="ph_insurance_provider" placeholder="e.g. Blue Cross" />
+                <p id="insurance_provider-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_insurance_provider_val" role="alert"></p>
+              </div>
+
+              <!-- Insurance Member ID -->
+              <div>
+                <label for="insurance_member_id" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_insurance_member_id">Member ID</label>
+                <input type="text" id="insurance_member_id" name="insurance_member_id" minlength="6" maxlength="20"
+                  class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors"
+                  data-lang-placeholder="ph_insurance_member_id" placeholder="e.g. ABC123456" />
+                <p id="insurance_member_id-error" class="mt-1 text-xs text-red-600 hidden" data-lang-error="err_insurance_member_id_val" role="alert"></p>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Fieldset 4: Health Concern ── -->
+        <fieldset class="border border-gray-200 rounded-2xl p-6 md:p-8 bg-white shadow-sm">
+          <legend class="font-montserrat font-semibold text-lg text-navy px-2" data-lang="fs_concern">Health Concern</legend>
+
+          <div class="mt-4">
+            <label for="health_concern" class="block text-sm font-medium text-gray-slate mb-1" data-lang="form_health_concern">Brief description of your health concern</label>
+            <textarea id="health_concern" name="health_concern" required minlength="20" maxlength="500" rows="4"
+              class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-action focus:border-blue-action outline-none transition-colors resize-y"
+              data-lang-placeholder="ph_health_concern" placeholder="Describe your symptoms, concerns, or reason for the visit..."></textarea>
+            <div class="flex justify-between items-center mt-1">
+              <p id="health_concern-error" class="text-xs text-red-600 hidden" data-lang-error="err_health_concern_val" role="alert"></p>
+              <p id="health_concern-counter" class="text-xs text-gray-400 ml-auto"><span id="char-count">0</span>/500</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ── Consent & Submit ── -->
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+          <!-- Consent -->
+          <div>
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="contact_consent" name="contact_consent" required
+                class="mt-0.5 w-4 h-4 text-blue-action focus:ring-blue-action border-gray-300 rounded" />
+              <span class="text-sm text-gray-slate leading-relaxed" data-lang="form_consent_label">I consent to HealthCore contacting me by phone or email to follow up on this inquiry and confirm appointment details.</span>
+            </label>
+            <p id="contact_consent-error" class="mt-1 text-xs text-red-600 hidden ml-7" data-lang-error="err_contact_consent_val" role="alert"></p>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button type="submit" id="submit-btn"
+              class="flex-1 inline-flex items-center justify-center px-8 py-3.5 bg-blue-action text-white text-base font-semibold rounded-lg hover:bg-navy transition-colors focus:outline-none focus:ring-2 focus:ring-blue-action focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span data-lang="form_submit">Submit Inquiry</span>
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </button>
+            <button type="reset" id="reset-btn"
+              class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3.5 border-2 border-gray-300 text-gray-slate text-base font-semibold rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+              <span data-lang="form_reset">Clear Form</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ========== SUCCESS MESSAGE ========== -->
+    <div id="success-section" class="hidden text-center py-16">
+      <div class="bg-white rounded-3xl p-8 md:p-12 shadow-lg border border-green-200 max-w-xl mx-auto">
+        <div class="w-16 h-16 bg-green-vitality/20 text-green-vitality rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h2 class="font-montserrat font-bold text-2xl md:text-3xl text-navy mb-4" data-lang="success_title">Thank you for contacting HealthCore.</h2>
+        <p class="text-gray-slate/70 leading-relaxed mb-4" data-lang="success_body">We have received your inquiry. A member of our front-desk team will get in touch with you within 1 business day to confirm your appointment details and answer any questions.</p>
+        <p class="text-gray-slate/70 leading-relaxed mb-4" data-lang="success_urgent">If you need urgent assistance, please call your preferred clinic directly using the numbers listed on our website.</p>
+        <p class="text-gray-slate/70 font-medium" data-lang="success_closing">We look forward to caring for you.</p>
+        <a href="index.html" class="inline-flex items-center justify-center mt-8 px-8 py-3 bg-blue-action text-white font-semibold rounded-lg hover:bg-navy transition-colors">
+          <span data-lang="form_back">← Back to Home</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-navy text-white mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <p class="text-center text-sm text-gray-400" data-lang="footer_copyright">© 2025 HealthCore. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="translations.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+  <script src="validation.js"></script>
+</body>
+</html>
