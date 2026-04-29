@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthCore Operations Dashboard - Test Suite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            hcBlue: "#0b3c5d",
+            hcTeal: "#1d8a99",
+            hcMint: "#e6f6f8",
+            hcAmber: "#f59e0b",
+            hcRed: "#dc2626"
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/typescript@5.6.3/lib/typescript.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen">
+  <div class="max-w-7xl mx-auto p-4 md:p-8">
+    <header class="rounded-2xl bg-gradient-to-r from-hcBlue to-hcTeal text-white p-6 md:p-8 shadow-lg">
+      <h1 class="text-2xl md:text-4xl font-bold tracking-tight">HealthCore Operations Dashboard - Test Suite</h1>
+      <p class="mt-2 text-sm md:text-base text-cyan-100">Manual testing UI for claims, appointments, clinician compliance, and business validations.</p>
+    </header>
+
+    <section class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <article class="bg-white rounded-xl shadow p-4 border border-slate-200">
+        <p class="text-sm text-slate-500">Claims loaded</p>
+        <p id="kpi-claims" class="text-2xl font-semibold">-</p>
+      </article>
+      <article class="bg-white rounded-xl shadow p-4 border border-slate-200">
+        <p class="text-sm text-slate-500">Appointments loaded</p>
+        <p id="kpi-appointments" class="text-2xl font-semibold">-</p>
+      </article>
+      <article class="bg-white rounded-xl shadow p-4 border border-slate-200">
+        <p class="text-sm text-slate-500">Clinicians loaded</p>
+        <p id="kpi-clinicians" class="text-2xl font-semibold">-</p>
+      </article>
+    </section>
+
+    <section class="mt-6 bg-white rounded-2xl shadow border border-slate-200">
+      <div class="flex flex-wrap gap-2 p-4 border-b border-slate-200">
+        <button data-tab="claims" class="tab-btn px-4 py-2 rounded-lg bg-hcBlue text-white text-sm font-medium">Claims</button>
+        <button data-tab="appointments" class="tab-btn px-4 py-2 rounded-lg bg-slate-200 text-slate-700 text-sm font-medium">Appointments</button>
+        <button data-tab="clinicians" class="tab-btn px-4 py-2 rounded-lg bg-slate-200 text-slate-700 text-sm font-medium">Clinicians</button>
+        <button data-tab="reports" class="tab-btn px-4 py-2 rounded-lg bg-slate-200 text-slate-700 text-sm font-medium">Reports</button>
+      </div>
+
+      <div id="tab-claims" class="tab-panel p-4 md:p-6 space-y-4">
+        <div class="flex flex-wrap gap-2">
+          <button id="btn-claims-all" class="px-3 py-2 text-sm rounded-lg bg-slate-900 text-white">All Claims</button>
+          <button id="btn-claims-denied" class="px-3 py-2 text-sm rounded-lg bg-hcAmber text-white">View Denied Claims</button>
+          <button id="btn-claims-validate" class="px-3 py-2 text-sm rounded-lg bg-hcRed text-white">Validate Claims</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="md:col-span-2">
+            <label for="claim-id-input" class="text-sm font-medium text-slate-700">Search Claim by ID</label>
+            <div class="mt-1 flex gap-2">
+              <input id="claim-id-input" type="text" placeholder="CLM-000042" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-hcTeal" />
+              <button id="btn-claim-search" class="px-4 py-2 rounded-lg bg-hcTeal text-white text-sm">Search</button>
+            </div>
+          </div>
+          <div class="bg-hcMint rounded-lg p-3 border border-cyan-200">
+            <p class="text-xs text-slate-600">Search result</p>
+            <p id="claim-search-result" class="text-sm font-medium mt-1">No search yet.</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-slate-50 text-slate-700">
+              <tr>
+                <th class="text-left px-3 py-2">Claim ID</th>
+                <th class="text-left px-3 py-2">Patient</th>
+                <th class="text-left px-3 py-2">Location</th>
+                <th class="text-left px-3 py-2">Payer</th>
+                <th class="text-left px-3 py-2">Status</th>
+                <th class="text-right px-3 py-2">Amount</th>
+                <th class="text-left px-3 py-2">Validation</th>
+              </tr>
+            </thead>
+            <tbody id="claims-tbody" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-appointments" class="tab-panel hidden p-4 md:p-6 space-y-4">
+        <div class="flex flex-wrap gap-2">
+          <button id="btn-appointments-all" class="px-3 py-2 text-sm rounded-lg bg-slate-900 text-white">All Appointments</button>
+          <button id="btn-appointments-texas" class="px-3 py-2 text-sm rounded-lg bg-hcTeal text-white">Citas en Texas</button>
+          <button id="btn-appointments-asc" class="px-3 py-2 text-sm rounded-lg bg-slate-200 text-slate-800">Sort Date Asc</button>
+          <button id="btn-appointments-desc" class="px-3 py-2 text-sm rounded-lg bg-slate-200 text-slate-800">Sort Date Desc</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-slate-50 text-slate-700">
+              <tr>
+                <th class="text-left px-3 py-2">Appointment ID</th>
+                <th class="text-left px-3 py-2">Location</th>
+                <th class="text-left px-3 py-2">Service</th>
+                <th class="text-left px-3 py-2">Date</th>
+                <th class="text-left px-3 py-2">Time</th>
+                <th class="text-left px-3 py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody id="appointments-tbody" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-clinicians" class="tab-panel hidden p-4 md:p-6 space-y-4">
+        <div class="flex flex-wrap gap-2">
+          <button id="btn-clinicians-at-risk" class="px-3 py-2 text-sm rounded-lg bg-hcAmber text-white">At Risk / Overdue</button>
+          <button id="btn-clinicians-expiring" class="px-3 py-2 text-sm rounded-lg bg-hcRed text-white">Licences <= 90 days</button>
+          <button id="btn-clinicians-all" class="px-3 py-2 text-sm rounded-lg bg-slate-900 text-white">All Clinicians</button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-slate-50 text-slate-700">
+              <tr>
+                <th class="text-left px-3 py-2">Clinician</th>
+                <th class="text-left px-3 py-2">Role</th>
+                <th class="text-left px-3 py-2">Location</th>
+                <th class="text-right px-3 py-2">CME Logged</th>
+                <th class="text-right px-3 py-2">CME Required</th>
+                <th class="text-left px-3 py-2">Licence Expiry</th>
+              </tr>
+            </thead>
+            <tbody id="clinicians-tbody" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-reports" class="tab-panel hidden p-4 md:p-6 space-y-5">
+        <div class="flex flex-wrap gap-2">
+          <button id="btn-generate-reports" class="px-3 py-2 text-sm rounded-lg bg-hcBlue text-white">Generate Reports</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <article class="rounded-xl border border-slate-200 p-4 bg-slate-50">
+            <h3 class="font-semibold text-slate-800">Denial Metrics</h3>
+            <p id="report-denial-global" class="mt-2 text-sm"></p>
+            <div id="report-denial-payer" class="mt-3 text-sm space-y-1"></div>
+          </article>
+          <article class="rounded-xl border border-slate-200 p-4 bg-slate-50">
+            <h3 class="font-semibold text-slate-800">No-Show Metrics</h3>
+            <div id="report-noshow-location" class="mt-2 text-sm space-y-1"></div>
+          </article>
+        </div>
+
+        <article class="rounded-xl border border-slate-200 p-4">
+          <h3 class="font-semibold text-slate-800">CME Report</h3>
+          <div class="overflow-x-auto mt-3">
+            <table class="min-w-full text-sm">
+              <thead class="bg-slate-50 text-slate-700">
+                <tr>
+                  <th class="text-left px-3 py-2">Clinician</th>
+                  <th class="text-left px-3 py-2">Status</th>
+                  <th class="text-right px-3 py-2">% Complete</th>
+                  <th class="text-right px-3 py-2">Days in Cycle</th>
+                  <th class="text-right px-3 py-2">Licence Days Left</th>
+                </tr>
+              </thead>
+              <tbody id="cme-tbody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="mt-6 bg-slate-900 text-slate-100 rounded-2xl shadow p-4 md:p-6">
+      <h2 class="text-lg font-semibold">Results Console</h2>
+      <p class="text-xs text-slate-400 mt-1">Shows latest operation output in JSON.</p>
+      <pre id="results-console" class="mt-3 text-xs overflow-auto max-h-96 bg-black/40 rounded-lg p-3"></pre>
+    </section>
+  </div>
+
+  <script type="module">
+    const consoleEl = document.getElementById("results-console");
+
+    function writeConsole(payload) {
+      consoleEl.textContent = JSON.stringify(payload, null, 2);
+    }
+
+    async function loadTsModule(filePath, rewriteMap = {}) {
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error(`Unable to load ${filePath}`);
+      }
+
+      const source = await response.text();
+      const transpiled = window.ts.transpileModule(source, {
+        compilerOptions: {
+          target: window.ts.ScriptTarget.ES2020,
+          module: window.ts.ModuleKind.ES2020,
+          strict: true
+        }
+      }).outputText;
+
+      const rewritten = Object.entries(rewriteMap).reduce((acc, [from, to]) => {
+        return acc
+          .replace(new RegExp(`from\\s+["']${from}["']`, "g"), `from "${to}"`)
+          .replace(new RegExp(`import\\s+["']${from}["']`, "g"), `import "${to}"`);
+      }, transpiled);
+
+      const blob = new Blob([rewritten], { type: "text/javascript" });
+      return URL.createObjectURL(blob);
+    }
+
+    async function bootstrap() {
+      const modelsUrl = await loadTsModule("./types/models.ts");
+      const collectionsUrl = await loadTsModule("./utils/collections.ts", { "../types/models": modelsUrl });
+      const searchUrl = await loadTsModule("./utils/search.ts", { "../types/models": modelsUrl });
+      const transformationsUrl = await loadTsModule("./utils/transformations.ts", { "../types/models": modelsUrl });
+      const validationsUrl = await loadTsModule("./utils/validations.ts", { "../types/models": modelsUrl });
+
+      const collections = await import(collectionsUrl);
+      const search = await import(searchUrl);
+      const transformations = await import(transformationsUrl);
+      const validations = await import(validationsUrl);
+
+      const sampleLocations = [
+        {
+          locationId: "TX-AUS-001",
+          name: "HealthCore Austin Central",
+          city: "Austin",
+          stateOrCountry: "TX",
+          country: "US",
+          phone: "+1-512-100-0001",
+          averageConsultationFee: {
+            primary_care: 140,
+            chronic_disease: 210,
+            preventive: 120,
+            specialist: 260,
+            womens_health: 190,
+            paediatric: 160,
+            mental_health: 180
+          }
+        },
+        {
+          locationId: "FL-MIA-002",
+          name: "HealthCore Miami Bay",
+          city: "Miami",
+          stateOrCountry: "FL",
+          country: "US",
+          phone: "+1-305-100-0002",
+          averageConsultationFee: {
+            primary_care: 150,
+            chronic_disease: 220,
+            preventive: 130,
+            specialist: 280,
+            womens_health: 200,
+            paediatric: 165,
+            mental_health: 185
+          }
+        },
+        {
+          locationId: "UK-LON-003",
+          name: "HealthCore London South",
+          city: "London",
+          stateOrCountry: "London",
+          country: "UK",
+          phone: "+44-20-1000-0003",
+          averageConsultationFee: {
+            primary_care: 130,
+            chronic_disease: 205,
+            preventive: 110,
+            specialist: 250,
+            womens_health: 185,
+            paediatric: 155,
+            mental_health: 175
+          }
+        }
+      ];
+
+      const sampleClaims = [
+        {
+          claimId: "CLM-000001",
+          patientId: "HC-A1B2C3",
+          locationId: "TX-AUS-001",
+          serviceType: "primary_care",
+          payerName: "Aetna",
+          payerId: "PAY-001",
+          submissionDate: "2026-04-07",
+          claimAmount: 140,
+          status: "approved",
+          resubmitted: false
+        },
+        {
+          claimId: "CLM-000002",
+          patientId: "HC-D4E5F6",
+          locationId: "TX-AUS-001",
+          serviceType: "specialist",
+          payerName: "Aetna",
+          payerId: "PAY-001",
+          submissionDate: "2026-04-08",
+          claimAmount: 260,
+          status: "denied",
+          denialReason: "missing_authorisation",
+          resubmitted: true
+        },
+        {
+          claimId: "CLM-000003",
+          patientId: "HC-G7H8I9",
+          locationId: "FL-MIA-002",
+          serviceType: "chronic_disease",
+          payerName: "UnitedHealth",
+          payerId: "PAY-002",
+          submissionDate: "2026-04-09",
+          claimAmount: 220,
+          status: "pending",
+          resubmitted: false
+        },
+        {
+          claimId: "CLM-000004",
+          patientId: "HC-J1K2L3",
+          locationId: "UK-LON-003",
+          serviceType: "mental_health",
+          payerName: "Bupa",
+          payerId: "PAY-003",
+          submissionDate: "2026-04-10",
+          claimAmount: 175,
+          status: "denied",
+          denialReason: "incomplete_documentation",
+          resubmitted: false
+        },
+        {
+          claimId: "CLM-000005",
+          patientId: "INVALID",
+          locationId: "UNKNOWN",
+          serviceType: "preventive",
+          payerName: "Aetna",
+          payerId: "PAY-001",
+          submissionDate: "2027-01-01",
+          claimAmount: -20,
+          status: "denied",
+          resubmitted: false
+        }
+      ];
+
+      const sampleAppointments = [
+        {
+          appointmentId: "APT-000001",
+          patientId: "HC-A1B2C3",
+          locationId: "TX-AUS-001",
+          serviceType: "primary_care",
+          scheduledDate: "2026-04-11",
+          scheduledTime: "09:00",
+          status: "completed",
+          confirmedAt: "2026-04-10T15:30:00Z"
+        },
+        {
+          appointmentId: "APT-000002",
+          patientId: "HC-D4E5F6",
+          locationId: "TX-AUS-001",
+          serviceType: "specialist",
+          scheduledDate: "2026-04-12",
+          scheduledTime: "11:30",
+          status: "no_show",
+          noShowReason: "transport_issue"
+        },
+        {
+          appointmentId: "APT-000003",
+          patientId: "HC-G7H8I9",
+          locationId: "FL-MIA-002",
+          serviceType: "chronic_disease",
+          scheduledDate: "2026-04-10",
+          scheduledTime: "14:00",
+          status: "scheduled"
+        },
+        {
+          appointmentId: "APT-000004",
+          patientId: "HC-J1K2L3",
+          locationId: "UK-LON-003",
+          serviceType: "mental_health",
+          scheduledDate: "2026-04-09",
+          scheduledTime: "16:00",
+          status: "no_show"
+        },
+        {
+          appointmentId: "APT-000005",
+          patientId: "HC-M4N5O6",
+          locationId: "TX-AUS-001",
+          serviceType: "preventive",
+          scheduledDate: "2026-04-08",
+          scheduledTime: "08:30",
+          status: "confirmed",
+          confirmedAt: "2026-04-07T12:10:00Z"
+        }
+      ];
+
+      const sampleClinicians = [
+        {
+          clinicianId: "CLN-000001",
+          firstName: "Elena",
+          lastName: "Brooks",
+          role: "physician",
+          locationId: "TX-AUS-001",
+          licenceState: "TX",
+          licenceExpiryDate: "2026-06-15",
+          cmeHoursRequired: 40,
+          cmeHoursLogged: 18,
+          cmeYearStartDate: "2026-01-01"
+        },
+        {
+          clinicianId: "CLN-000002",
+          firstName: "Marcus",
+          lastName: "Lee",
+          role: "nurse_practitioner",
+          locationId: "FL-MIA-002",
+          licenceState: "FL",
+          licenceExpiryDate: "2026-10-01",
+          cmeHoursRequired: 30,
+          cmeHoursLogged: 30,
+          cmeYearStartDate: "2026-01-01"
+        },
+        {
+          clinicianId: "CLN-000003",
+          firstName: "Aisha",
+          lastName: "Khan",
+          role: "nurse",
+          locationId: "UK-LON-003",
+          licenceState: "UK",
+          licenceExpiryDate: "2026-05-20",
+          cmeHoursRequired: 25,
+          cmeHoursLogged: 8,
+          cmeYearStartDate: "2025-05-01"
+        }
+      ];
+
+      const knownLocationIds = sampleLocations.map((l) => l.locationId);
+      const asOfDate = "2026-04-30";
+
+      let claimsView = [...sampleClaims];
+      let appointmentsView = [...sampleAppointments];
+      let cliniciansView = [...sampleClinicians];
+
+      const claimsTbody = document.getElementById("claims-tbody");
+      const appointmentsTbody = document.getElementById("appointments-tbody");
+      const cliniciansTbody = document.getElementById("clinicians-tbody");
+      const cmeTbody = document.getElementById("cme-tbody");
+
+      function renderClaims(rows) {
+        claimsTbody.innerHTML = rows.map((claim) => {
+          const validation = validations.validateClaim(claim, knownLocationIds, asOfDate);
+          const validBadge = validation.valid
+            ? '<span class="inline-block px-2 py-1 text-xs rounded bg-emerald-100 text-emerald-700">valid</span>'
+            : `<span class="inline-block px-2 py-1 text-xs rounded bg-red-100 text-red-700" title="${validation.errors.join(" | ")}">invalid</span>`;
+
+          const rowClass = validation.valid ? "" : "bg-red-50";
+          return `
+            <tr class="${rowClass}">
+              <td class="px-3 py-2 font-medium">${claim.claimId}</td>
+              <td class="px-3 py-2">${claim.patientId}</td>
+              <td class="px-3 py-2">${claim.locationId}</td>
+              <td class="px-3 py-2">${claim.payerName}</td>
+              <td class="px-3 py-2">${claim.status}</td>
+              <td class="px-3 py-2 text-right">$${claim.claimAmount.toFixed(2)}</td>
+              <td class="px-3 py-2">${validBadge}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderAppointments(rows) {
+        appointmentsTbody.innerHTML = rows.map((appt) => `
+          <tr>
+            <td class="px-3 py-2 font-medium">${appt.appointmentId}</td>
+            <td class="px-3 py-2">${appt.locationId}</td>
+            <td class="px-3 py-2">${appt.serviceType}</td>
+            <td class="px-3 py-2">${appt.scheduledDate}</td>
+            <td class="px-3 py-2">${appt.scheduledTime}</td>
+            <td class="px-3 py-2">${appt.status}</td>
+          </tr>
+        `).join("");
+      }
+
+      function renderClinicians(rows) {
+        cliniciansTbody.innerHTML = rows.map((clinician) => `
+          <tr>
+            <td class="px-3 py-2 font-medium">${clinician.firstName} ${clinician.lastName}</td>
+            <td class="px-3 py-2">${clinician.role}</td>
+            <td class="px-3 py-2">${clinician.locationId}</td>
+            <td class="px-3 py-2 text-right">${clinician.cmeHoursLogged}</td>
+            <td class="px-3 py-2 text-right">${clinician.cmeHoursRequired}</td>
+            <td class="px-3 py-2">${clinician.licenceExpiryDate}</td>
+          </tr>
+        `).join("");
+      }
+
+      function renderCmeReport(rows) {
+        cmeTbody.innerHTML = rows.map((row) => {
+          const statusColor = row.complianceStatus === "complete"
+            ? "bg-emerald-100 text-emerald-700"
+            : row.complianceStatus === "on_track"
+            ? "bg-cyan-100 text-cyan-700"
+            : row.complianceStatus === "at_risk"
+            ? "bg-amber-100 text-amber-700"
+            : "bg-red-100 text-red-700";
+
+          return `
+            <tr>
+              <td class="px-3 py-2 font-medium">${row.fullName}</td>
+              <td class="px-3 py-2"><span class="inline-block px-2 py-1 text-xs rounded ${statusColor}">${row.complianceStatus}</span></td>
+              <td class="px-3 py-2 text-right">${row.percentComplete.toFixed(1)}%</td>
+              <td class="px-3 py-2 text-right">${row.daysRemainingInCycle}</td>
+              <td class="px-3 py-2 text-right">${row.licenceDaysRemaining}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function setKpis() {
+        document.getElementById("kpi-claims").textContent = String(sampleClaims.length);
+        document.getElementById("kpi-appointments").textContent = String(sampleAppointments.length);
+        document.getElementById("kpi-clinicians").textContent = String(sampleClinicians.length);
+      }
+
+      function activateTab(name) {
+        document.querySelectorAll(".tab-panel").forEach((panel) => {
+          panel.classList.add("hidden");
+        });
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.remove("bg-hcBlue", "text-white");
+          btn.classList.add("bg-slate-200", "text-slate-700");
+        });
+
+        document.getElementById(`tab-${name}`).classList.remove("hidden");
+
+        const active = document.querySelector(`.tab-btn[data-tab=\"${name}\"]`);
+        active.classList.remove("bg-slate-200", "text-slate-700");
+        active.classList.add("bg-hcBlue", "text-white");
+      }
+
+      function generateReports() {
+        const denialGlobal = transformations.calculateDenialRate(sampleClaims);
+        const denialByPayer = transformations.denialRateByPayer(sampleClaims);
+        const highPayers = transformations.flagHighDenialPayers(sampleClaims);
+
+        const noShowByLocation = transformations.noShowRateByLocation(sampleAppointments);
+        const highNoShowLocations = transformations.flagHighNoShowLocations(sampleAppointments);
+
+        const cmeReport = transformations.generateCMEReport(sampleClinicians, asOfDate);
+
+        const denialFlag = validations.isDenialRateAboveThreshold(denialGlobal) ? "ALERT" : "OK";
+
+        document.getElementById("report-denial-global").innerHTML =
+          `<span class=\"font-medium\">Global Denial Rate:</span> ${denialGlobal.toFixed(2)}% ` +
+          `<span class=\"inline-block ml-2 px-2 py-0.5 text-xs rounded ${denialFlag === "ALERT" ? "bg-red-100 text-red-700" : "bg-emerald-100 text-emerald-700"}\">${denialFlag}</span>`;
+
+        document.getElementById("report-denial-payer").innerHTML = Object.entries(denialByPayer)
+          .map(([payer, rate]) => `
+            <div class="flex items-center justify-between rounded bg-white border border-slate-200 px-2 py-1">
+              <span>${payer}</span>
+              <span class="font-medium">${rate.toFixed(2)}%</span>
+            </div>
+          `).join("");
+
+        document.getElementById("report-noshow-location").innerHTML = Object.entries(noShowByLocation)
+          .map(([loc, rate]) => {
+            const over = validations.isNoShowRateAboveThreshold(rate);
+            return `
+              <div class="flex items-center justify-between rounded bg-white border border-slate-200 px-2 py-1">
+                <span>${loc}</span>
+                <span class="font-medium">${rate.toFixed(2)}% ${over ? "(alert)" : ""}</span>
+              </div>
+            `;
+          })
+          .join("");
+
+        renderCmeReport(cmeReport);
+
+        writeConsole({
+          denialGlobal,
+          denialByPayer,
+          highPayers,
+          noShowByLocation,
+          highNoShowLocations,
+          cmeReport
+        });
+      }
+
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => activateTab(btn.dataset.tab));
+      });
+
+      document.getElementById("btn-claims-all").addEventListener("click", () => {
+        claimsView = [...sampleClaims];
+        renderClaims(claimsView);
+        writeConsole(claimsView);
+      });
+
+      document.getElementById("btn-claims-denied").addEventListener("click", () => {
+        claimsView = collections.filterClaims(sampleClaims, { status: "denied" });
+        renderClaims(claimsView);
+        writeConsole(claimsView);
+      });
+
+      document.getElementById("btn-claims-validate").addEventListener("click", () => {
+        const validationsResult = sampleClaims.map((claim) => ({
+          claimId: claim.claimId,
+          ...validations.validateClaim(claim, knownLocationIds, asOfDate)
+        }));
+        renderClaims(sampleClaims);
+        writeConsole(validationsResult);
+      });
+
+      document.getElementById("btn-claim-search").addEventListener("click", () => {
+        const input = document.getElementById("claim-id-input");
+        const claimId = input.value.trim();
+        const found = search.findClaimById(sampleClaims, claimId);
+
+        document.getElementById("claim-search-result").textContent = found
+          ? `${found.claimId} | ${found.status} | $${found.claimAmount.toFixed(2)}`
+          : "Claim not found.";
+
+        writeConsole(found ?? { message: "Claim not found", claimId });
+      });
+
+      document.getElementById("btn-appointments-all").addEventListener("click", () => {
+        appointmentsView = [...sampleAppointments];
+        renderAppointments(appointmentsView);
+        writeConsole(appointmentsView);
+      });
+
+      document.getElementById("btn-appointments-texas").addEventListener("click", () => {
+        const texasLocationIds = sampleLocations
+          .filter((loc) => loc.country === "US" && loc.stateOrCountry === "TX")
+          .map((loc) => loc.locationId);
+
+        appointmentsView = sampleAppointments.filter((apt) => texasLocationIds.includes(apt.locationId));
+        renderAppointments(appointmentsView);
+        writeConsole(appointmentsView);
+      });
+
+      document.getElementById("btn-appointments-asc").addEventListener("click", () => {
+        appointmentsView = collections.sortAppointmentsByDate(appointmentsView, "asc");
+        renderAppointments(appointmentsView);
+        writeConsole(appointmentsView);
+      });
+
+      document.getElementById("btn-appointments-desc").addEventListener("click", () => {
+        appointmentsView = collections.sortAppointmentsByDate(appointmentsView, "desc");
+        renderAppointments(appointmentsView);
+        writeConsole(appointmentsView);
+      });
+
+      document.getElementById("btn-clinicians-all").addEventListener("click", () => {
+        cliniciansView = [...sampleClinicians];
+        renderClinicians(cliniciansView);
+        writeConsole(cliniciansView);
+      });
+
+      document.getElementById("btn-clinicians-at-risk").addEventListener("click", () => {
+        cliniciansView = transformations.getCliniciansAtRisk(sampleClinicians, asOfDate);
+        renderClinicians(cliniciansView);
+        writeConsole(cliniciansView);
+      });
+
+      document.getElementById("btn-clinicians-expiring").addEventListener("click", () => {
+        cliniciansView = transformations.getCliniciansWithExpiringLicences(sampleClinicians, asOfDate, 90);
+        renderClinicians(cliniciansView);
+        writeConsole(cliniciansView);
+      });
+
+      document.getElementById("btn-generate-reports").addEventListener("click", generateReports);
+
+      setKpis();
+      renderClaims(claimsView);
+      renderAppointments(appointmentsView);
+      renderClinicians(cliniciansView);
+      generateReports();
+      activateTab("claims");
+    }
+
+    bootstrap().catch((error) => {
+      writeConsole({ error: error.message });
+      const msg = document.createElement("div");
+      msg.className = "max-w-7xl mx-auto mt-4 p-4 rounded-lg bg-red-100 text-red-700 border border-red-200";
+      msg.textContent = `Initialization error: ${error.message}`;
+      document.body.prepend(msg);
+    });
+  </script>
+</body>
+</html>
